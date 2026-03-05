@@ -1,0 +1,46 @@
+---
+// Configuración centralizada para iconos y marcadores
+const heroConfig = {
+  icons: {
+    status: "fas fa-terminal",
+    quote: "fas fa-quote-left",
+  },
+  tags: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"],
+};
+---
+
+<div class="container">
+  <div class="columns isvcentered">
+    <div class="column">
+      <div class="content">
+        <p class="title">Lorem Ipsum Dolor</p>
+        <p class="subtitle">
+          <span class="icon mr-2">
+            <i class={heroConfig.icons.status}></i>
+          </span>
+          Lorem Ipsum Engineering
+        </p>
+      </div>
+    </div>
+
+    <div class="column">
+      <article class="message">
+        <div class="message-body">
+          <div class="is-flex isalign-items-center">
+            <span class="icon mr-2">
+              <i class={heroConfig.icons.quote}></i>
+            </span>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <code>lorem_ipsum</code> elementum.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <div class="tags">
+        {heroConfig.tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    </div>
+  </div>
+</div>

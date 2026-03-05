@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Configuración centralizada para fácil edición
+const sectionConfig = {
+  titleIcon: "fas fa-terminal",
+  quoteIcon: "fas fa-quote-left",
+  titles: {
+    main: "Lorem Ipsum Title",
+  },
+};
+---
+
+<Layout title="Lorem Ipsum Portfolio">
+  <div class="container">
+    <div class="is-flex is-align-items-center">
+      <span class="icon mr-2">
+        <i class={sectionConfig.titleIcon}></i>
+      </span>
+      <h3 class="title">{sectionConfig.titles.main}</h3>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="columns">
+      <div class="column">
+        <div class="content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            <strong>Donec a diam</strong> lectus. Sed sit amet ipsum mauris. Maecenas
+            congue ligula ac quam viverra nec consectetur ante hendrerit. Pellentesque
+            non efficitur sem, a sollicitudin tellus.
+          </p>
+        </div>
+      </div>
+
+      <div class="column">
+        <article class="message">
+          <div class="message-body">
+            <span class="icon is-small mb-2">
+              <i class={sectionConfig.quoteIcon}></i>
+            </span>
+            <p>
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Pellentesque non efficitur sem."
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,36 @@
+---
+const { pathname } = Astro.url;
+
+// Configuración de rutas e iconos (Fácil de modificar)
+const navItems = [
+  { path: "/", label: "Lorem One", icon: "fas fa-circle" },
+  { path: "/services", label: "Lorem Two", icon: "fas fa-circle" },
+  { path: "/experience", label: "Lorem Three", icon: "fas fa-circle" },
+  { path: "/skills", label: "Lorem Four", icon: "fas fa-circle" },
+];
+
+const isActive = (path: string) => {
+  const currentPath = pathname.replace(/\/$/, "") || "/";
+  const targetPath = path.replace(/\/$/, "") || "/";
+  return currentPath === targetPath ? "is-active" : "";
+};
+---
+
+<nav class="tabs is-boxed">
+  <div class="container">
+    <ul>
+      {
+        navItems.map((item) => (
+          <li class={isActive(item.path)}>
+            <a href={item.path}>
+              <span class="icon">
+                <i class={item.icon} />
+              </span>
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

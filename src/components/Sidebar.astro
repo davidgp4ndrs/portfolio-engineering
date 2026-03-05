@@ -1,0 +1,81 @@
+---
+import ImgUser from "../assets/3.png";
+
+const uiConfig = {
+  icons: {
+    email: "fas fa-envelope",
+    phone: "fas fa-phone",
+    github: "fab fa-github",
+    certDefault: "fas fa-certificate",
+    download: "fas fa-file-pdf",
+  },
+};
+
+const contactPlaceholder = [
+  { text: "lorem.ipsum@email.com", icon: uiConfig.icons.email },
+  { text: "+00 000 000 000", icon: uiConfig.icons.phone },
+  { text: "github.com/loremipsum", icon: uiConfig.icons.github },
+];
+
+const certificationsPlaceholder = [
+  { name: "Lorem Ipsum Dolor Sit", icon: uiConfig.icons.certDefault },
+  { name: "Consectetur Adipiscing", icon: uiConfig.icons.certDefault },
+  { name: "Sed Do Eiursmod Tempor", icon: uiConfig.icons.certDefault },
+];
+---
+
+<div class="media mb-3">
+  <div class="media-content">
+    <div class="is-flex is-justify-content-center">
+      <figure class="image is-128x128">
+        <img src={ImgUser.src} alt="Profile" class="is-rounded" />
+      </figure>
+    </div>
+  </div>
+</div>
+
+<div class="media mt-1">
+  <div class="menu ml4">
+    <p class="menu-label">Lorem Ipsum</p>
+    <ul class="menu-list">
+      {
+        contactPlaceholder.map((item) => (
+          <li>
+            <div class="px-3 py-1 is-flex is-align-items-center">
+              <span class="icon mr-3">
+                <i class={item.icon} />
+              </span>
+              <span>{item.text}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="menu-label">Lorem Ipsum</p>
+    <ul class="menu-list">
+      {
+        certificationsPlaceholder.map((cert) => (
+          <li>
+            <div class="px-3 py-1 is-flex is-align-items-center">
+              <span class="icon mr-3">
+                <i class={cert.icon} />
+              </span>
+              <span>{cert.name}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="menu-label">Lorem Ipsum</p>
+    <div class="px-2">
+      <button class="button is-fullwidth">
+        <span class="icon">
+          <i class={uiConfig.icons.download}></i>
+        </span>
+        <span>Lorem Ipsum Dolor</span>
+      </button>
+    </div>
+  </div>
+</div>
