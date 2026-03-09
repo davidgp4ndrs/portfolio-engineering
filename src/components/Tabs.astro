@@ -1,27 +1,40 @@
 ---
 const { pathname } = Astro.url;
 
-// Configuración de rutas e iconos (Fácil de modificar)
+// 1. Detección de idioma
+const isEnglish = pathname.startsWith("/en");
+const lang = isEnglish ? "en" : "es";
+
+// 2. Diccionario con marcas de idioma y Lorem Ipsum
+const labels = {
+  es: ["Inicio ES", "Lorem ES", "Ipsum ES", "Dolor ES"],
+  en: ["Home EN", "Lorem EN", "Ipsum EN", "Dolor EN"],
+};
+const t = labels[lang];
+
+// 3. Rutas (He actualizado los iconos para que sean consistentes con un perfil de ingeniería)
 const navItems = [
-  { path: "/", label: "Lorem One", icon: "fas fa-circle" },
-  { path: "/services", label: "Lorem Two", icon: "fas fa-circle" },
-  { path: "/experience", label: "Lorem Three", icon: "fas fa-circle" },
-  { path: "/skills", label: "Lorem Four", icon: "fas fa-circle" },
+  { path: `/${lang}/`, label: t[0], icon: "fas fa-home" },
+  { path: `/${lang}/services`, label: t[1], icon: "fas fa-microchip" },
+  { path: `/${lang}/experience`, label: t[2], icon: "fas fa-layer-group" },
+  { path: `/${lang}/skills`, label: t[3], icon: "fas fa-terminal" },
 ];
 
-const isActive = (path: string) => {
-  const currentPath = pathname.replace(/\/$/, "") || "/";
-  const targetPath = path.replace(/\/$/, "") || "/";
+// 4. Lógica is-active
+const currentPath = pathname.replace(/\/$/, "") || `/${lang}`;
+
+const getActiveClass = (path: string) => {
+  const targetPath = path.replace(/\/$/, "") || `/${lang}`;
   return currentPath === targetPath ? "is-active" : "";
 };
 ---
 
-<nav class="tabs is-boxed">
+<nav class="tabs is-boxed mt-2">
   <div class="container">
     <ul>
       {
         navItems.map((item) => (
-          <li class={isActive(item.path)}>
+          <li class={getActiveClass(item.path)}>
             <a href={item.path}>
               <span class="icon">
                 <i class={item.icon} />

@@ -1,0 +1,60 @@
+---
+const { data, uiConfig } = Astro.props;
+---
+
+<div class="container mb-5 mt-0">
+  <div class="is-flex is-align-items-center">
+    <span class="icon mr-2">
+      <i class={uiConfig.headerIcon}></i>
+    </span>
+    <h2 class="title">{data.header}</h2>
+  </div>
+</div>
+
+<div class="container">
+  <div class="columns is-multiline">
+    {
+      data.items.map((service) => (
+        <div class="column is-4">
+          <article class="media">
+            <figure class="media-left">
+              <span class="icon">
+                <i class={service.icon || uiConfig.serviceIcon} />
+              </span>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong class="">{service.title}</strong>
+                  <br />
+                  <small class="">{service.description}</small>
+                </p>
+                <ul class="">
+                  {service.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      ))
+    }
+
+    <div class="column is-12">
+      <article class="message">
+        <div class="message-body">
+          <div class="is-flex is-align-items-center">
+            <span class="icon mr-2">
+              <i class={uiConfig.quoteIcon}></i>
+            </span>
+            <p class="">
+              {data.footerQuote}
+              <code>system.status</code>
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

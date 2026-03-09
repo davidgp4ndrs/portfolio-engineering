@@ -1,0 +1,38 @@
+---
+// src/components/IndexTemplate.astro
+import Layout from "../layouts/Layout.astro";
+
+const { content, titleIcon, quoteIcon } = Astro.props;
+---
+
+<Layout title={content.mainTitle}>
+  <div class="container">
+    <div class="is-flex is-align-items-center">
+      <span class="icon mr-2">
+        <i class={titleIcon}></i>
+      </span>
+      <h3 class="title">{content.mainTitle}</h3>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="columns">
+      <div class="column">
+        <div class="content">
+          <p set:html={content.bio} />
+        </div>
+      </div>
+
+      <div class="column">
+        <article class="message">
+          <div class="message-body">
+            <span class="icon is-small mb-2">
+              <i class={quoteIcon}></i>
+            </span>
+            <p><i>"{content.quote}"</i></p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</Layout>

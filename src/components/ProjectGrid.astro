@@ -1,0 +1,55 @@
+---
+const { data, config } = Astro.props;
+---
+
+<div class="container mb-5">
+  <div class="is-flex is-align-items-center">
+    <span class="icon mr-2">
+      <i class={config.sectionIcon}></i>
+    </span>
+    <h2 class="title is-4">{data.sectionTitle}</h2>
+    <span class="tag is-rounded ml-3">v.1.0.2</span>
+  </div>
+</div>
+
+<div class="columns is-multiline">
+  {
+    data.items.map((item) => (
+      <div class="column is-4">
+        <div
+          class="box is-shadowless"
+          style="border: 1px solid var(--bulma-border-weak); height: 100%;"
+        >
+          <article class="media">
+            <div class="media-content">
+              <div class="content">
+                <div class="is-flex is-justify-content-space-between is-align-items-flex-start">
+                  <h3 class="title is-5 mb-2">{item.title}</h3>
+                  <span class="tag is-light is-size-7">{item.period}</span>
+                </div>
+                <p class="subtitle is-6 has-text-link mb-3">{item.role}</p>
+                <p class="is-size-6">{item.description}</p>
+                <div class="tags">
+                  {item.tags.map((tag) => (
+                    <span class="tag is-info is-light is-small">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<div class="container mt-3">
+  <div class="is-flex is-justify-content-flex-end">
+    <p class="is-size-7 has-text-grey">
+      <span class="icon is-small">
+        <i class={config.noteIcon}></i>
+      </span>
+      {data.note}: <strong class="has-text-success">{data.status}</strong>
+    </p>
+  </div>
+</div>

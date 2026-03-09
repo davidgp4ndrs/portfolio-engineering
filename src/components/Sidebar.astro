@@ -1,5 +1,11 @@
 ---
 import ImgUser from "../assets/3.png";
+import { sidebarLabels } from "../data/ui"; // Importamos tus etiquetas
+
+// Lógica de detección de idioma
+const { pathname } = Astro.url;
+const lang = pathname.startsWith("/es") ? "es" : "en";
+const t = sidebarLabels[lang];
 
 const uiConfig = {
   icons: {
@@ -35,8 +41,8 @@ const certificationsPlaceholder = [
 </div>
 
 <div class="media mt-1">
-  <div class="menu ml4">
-    <p class="menu-label">Lorem Ipsum</p>
+  <div class="menu ml-4">
+    <p class="menu-label">{t.contact}</p>
     <ul class="menu-list">
       {
         contactPlaceholder.map((item) => (
@@ -45,14 +51,14 @@ const certificationsPlaceholder = [
               <span class="icon mr-3">
                 <i class={item.icon} />
               </span>
-              <span>{item.text}</span>
+              <span class="is-size-7">{item.text}</span>
             </div>
           </li>
         ))
       }
     </ul>
 
-    <p class="menu-label">Lorem Ipsum</p>
+    <p class="menu-label">{t.certs}</p>
     <ul class="menu-list">
       {
         certificationsPlaceholder.map((cert) => (
@@ -61,20 +67,30 @@ const certificationsPlaceholder = [
               <span class="icon mr-3">
                 <i class={cert.icon} />
               </span>
-              <span>{cert.name}</span>
+              <span class="is-size-7">{cert.name}</span>
             </div>
           </li>
         ))
       }
     </ul>
 
-    <p class="menu-label">Lorem Ipsum</p>
+    <p class="menu-label">{t.cv}</p>
     <div class="px-2">
-      <button class="button is-fullwidth">
+      <button class="button is-fullwidth is-link is-outlined">
         <span class="icon">
           <i class={uiConfig.icons.download}></i>
         </span>
-        <span>Lorem Ipsum Dolor</span>
+        <span>{t.downloadBtn}</span>
+      </button>
+    </div>
+
+    <p class="menu-label">Modal</p>
+    <div class="px-2">
+      <button class="button is-link is-outlined is-fullwidth mt-4 open-contact">
+        <span class="icon">
+          <i class="fas fa-paper-plane"></i>
+        </span>
+        <span>{t.modalBtn}</span>
       </button>
     </div>
   </div>
