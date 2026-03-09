@@ -1,24 +1,28 @@
 ---
-// Configuración centralizada para iconos y marcadores
+import { heroData } from "../data/hero";
+
+const { pathname } = Astro.url;
+const lang = pathname.startsWith("/en") ? "en" : "es";
+const t = heroData[lang];
+
 const heroConfig = {
   icons: {
     status: "fas fa-terminal",
     quote: "fas fa-quote-left",
   },
-  tags: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"],
 };
 ---
 
 <div class="container">
-  <div class="columns isvcentered">
+  <div class="columns is-vcentered">
     <div class="column">
       <div class="content">
-        <p class="title">Lorem Ipsum Dolor</p>
+        <p class="title">{t.title}</p>
         <p class="subtitle">
           <span class="icon mr-2">
             <i class={heroConfig.icons.status}></i>
           </span>
-          Lorem Ipsum Engineering
+          {t.subtitle}
         </p>
       </div>
     </div>
@@ -26,20 +30,17 @@ const heroConfig = {
     <div class="column">
       <article class="message">
         <div class="message-body">
-          <div class="is-flex isalign-items-center">
+          <div class="is-flex is-align-items-center">
             <span class="icon mr-2">
               <i class={heroConfig.icons.quote}></i>
             </span>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              <code>lorem_ipsum</code> elementum.
-            </p>
+            <p set:html={t.message} />
           </div>
         </div>
       </article>
 
       <div class="tags">
-        {heroConfig.tags.map((tag) => <span class="tag">{tag}</span>)}
+        {t.tags.map((tag) => <span class="tag">{tag}</span>)}
       </div>
     </div>
   </div>

@@ -1,0 +1,14 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SkillGrid from "../../components/SkillGrid.astro";
+import { skillsData } from "../../data/skillsData";
+
+const skillConfig = {
+  headerIcon: "fas fa-microchip",
+  categoryIcon: "fas fa-code-branch",
+};
+---
+
+<Layout title="Habilidades | Portfolio">
+  <SkillGrid data={skillsData.es} config={skillConfig} />
+</Layout>

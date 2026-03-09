@@ -1,15 +1,27 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "bulma/css/bulma.min.css";
 import Sidebar from "../components/Sidebar.astro";
 import Hero from "../components/Hero.astro";
 import Tabs from "../components/Tabs.astro";
+import ContactModal from "../components/ContactModal.astro";
 
 interface Props {
   title: string;
 }
-const { title } = Astro.props;
 
-// Configuración de iconos de la "ventana"
+const { title } = Astro.props;
+const { pathname } = Astro.url;
+
+// Lógica de idioma mejorada
+const lang = pathname.startsWith("/en") ? "en" : "es";
+
+// Generar rutas dinámicas para los botones de idioma
+// Si estás en /es/skills, el botón EN te llevará a /en/skills
+const currentPathWithoutLang = pathname.replace(/^\/(es|en)/, "");
+const esPath = `/es${currentPathWithoutLang || "/"}`;
+const enPath = `/en${currentPathWithoutLang || "/"}`;
+
 const winIcons = {
   close: "fa-solid fa-circle has-text-danger",
   minimize: "fa-solid fa-circle has-text-warning",
@@ -19,13 +31,73 @@ const winIcons = {
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang={lang} data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/icons/font/css/all.css" />
     <link rel="stylesheet" href="/css/debug.css" />
     <title>{title}</title>
+    <ClientRouter />
+    <script is:inline>
+      // Bloque 1: Tema del Documento (Evita el flash de fondo)
+      const getTheme = () => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      };
+
+      document.documentElement.setAttribute("data-theme", getTheme());
+
+      document.addEventListener("astro:after-swap", () => {
+        document.documentElement.setAttribute("data-theme", getTheme());
+      });
+    </script>
+
+    <script is:inline>
+      // Bloque 2: Lógica del Botón e Iconos
+      const initTheme = () => {
+        const html = document.documentElement;
+        const themeBtn = document.getElementById("theme-toggle");
+        const themeIcon = document.querySelector("#theme-toggle i");
+
+        if (!themeBtn || !themeIcon) return;
+
+        const current = html.getAttribute("data-theme");
+        if (current === "dark") {
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+        } else {
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+        }
+
+        themeBtn.onclick = () => {
+          const isDark = html.getAttribute("data-theme") === "dark";
+          const nextTheme = isDark ? "light" : "dark";
+
+          html.setAttribute("data-theme", nextTheme);
+          localStorage.setItem("theme", nextTheme);
+
+          themeIcon.classList.toggle("fa-moon", nextTheme === "light");
+          themeIcon.classList.toggle("fa-sun", nextTheme === "dark");
+        };
+      };
+
+      document.addEventListener("DOMContentLoaded", initTheme);
+      document.addEventListener("astro:after-swap", initTheme);
+
+      // Bloque 3: Persistencia de Scroll
+      document.addEventListener('astro:before-preparation', () => {
+        window.savedScrollPosition = window.scrollY;
+      });
+
+      document.addEventListener('astro:after-swap', () => {
+        if (window.savedScrollPosition !== undefined) {
+          window.scrollTo(0, window.savedScrollPosition);
+        }
+      });
+    </script>
+
   </head>
   <body>
     <main class="section is-small">
@@ -44,6 +116,34 @@ const winIcons = {
               >
               <small class="ml-3 has-text-grey">{title}.exe</small>
             </div>
+
+            <button
+              class="card-header-icon"
+              id="theme-toggle"
+              title="Cambiar Tema"
+            >
+              <span class="icon">
+                <i class="fas fa-moon"></i>
+              </span>
+            </button>
+
+            <div class="card-header-icon">
+              <div class="buttons has-addons">
+                <a
+                  href={enPath}
+                  class={`button is-small is-uppercase ${lang === "en" ? "is-link is-selected" : "is-light"}`}
+                >
+                  EN
+                </a>
+                <a
+                  href={esPath}
+                  class={`button is-small is-uppercase ${lang === "es" ? "is-link is-selected" : "is-light"}`}
+                >
+                  ES
+                </a>
+              </div>
+            </div>
+
             <button class="card-header-icon">
               <span class="icon">
                 <i class={winIcons.options}></i>
@@ -57,7 +157,10 @@ const winIcons = {
                 <Sidebar />
               </aside>
 
-              <div class="column is-9">
+              <div
+                class="column is-9"
+                style="border-left: 1px solid var(--bulma-border-weak);"
+              >
                 <header class="hero is-small">
                   <div class="hero-body">
                     <Hero />
@@ -77,18 +180,19 @@ const winIcons = {
           <footer class="card-footer">
             <div class="card-footer-item">
               <span class="is-size-7">
-                Lorem Ipsum: <strong>Online</strong>
+                Status: <strong class="has-text-success">Online</strong>
               </span>
             </div>
             <div class="card-footer-item">
               <a href="#" class="is-size-7">
                 <span class="icon"><i class="fab fa-github"></i></span>
-                Lorem Source
+                Source Code
               </a>
             </div>
           </footer>
         </div>
       </div>
     </main>
+    <ContactModal />
   </body>
 </html>

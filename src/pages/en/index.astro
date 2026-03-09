@@ -1,0 +1,11 @@
+---
+import IndexTemplate from "../../components/IndexTemplate.astro";
+import { indexContent } from "../../data/indexContent";
+
+const config = {
+  titleIcon: "fas fa-terminal",
+  quoteIcon: "fas fa-quote-left",
+};
+---
+
+<IndexTemplate content={indexContent.en} {...config} />
