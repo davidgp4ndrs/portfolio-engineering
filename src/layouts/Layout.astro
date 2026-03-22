@@ -37,15 +37,23 @@ const winIcons = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/icons/font/css/all.css" />
     <link rel="stylesheet" href="/css/debug.css" />
+    <link rel="stylesheet" href="/css/typography.css" />
+    <link rel="stylesheet" href="/css/hero.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
     <title>{title}</title>
     <ClientRouter />
     <script is:inline>
       // Bloque 1: Tema del Documento (Evita el flash de fondo)
       const getTheme = () => {
-        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
           return localStorage.getItem("theme");
         }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
       };
 
       document.documentElement.setAttribute("data-theme", getTheme());
@@ -87,17 +95,16 @@ const winIcons = {
       document.addEventListener("astro:after-swap", initTheme);
 
       // Bloque 3: Persistencia de Scroll
-      document.addEventListener('astro:before-preparation', () => {
+      document.addEventListener("astro:before-preparation", () => {
         window.savedScrollPosition = window.scrollY;
       });
 
-      document.addEventListener('astro:after-swap', () => {
+      document.addEventListener("astro:after-swap", () => {
         if (window.savedScrollPosition !== undefined) {
           window.scrollTo(0, window.savedScrollPosition);
         }
       });
     </script>
-
   </head>
   <body>
     <main class="section is-small">
@@ -114,7 +121,7 @@ const winIcons = {
               <span class="icon is-small mx-1"
                 ><i class={winIcons.maximize}></i></span
               >
-              <small class="ml-3 has-text-grey">{title}.exe</small>
+              <small class="ml-3">{title}.exe</small>
             </div>
 
             <button
@@ -153,14 +160,10 @@ const winIcons = {
 
           <div class="card-content">
             <div class="columns is-gapless">
-              <aside class="column is-3">
+              <aside class="column is-one-quarter sidebar-wrapper">
                 <Sidebar />
               </aside>
-
-              <div
-                class="column is-9"
-                style="border-left: 1px solid var(--bulma-border-weak);"
-              >
+              <div class="column content-column">
                 <header class="hero is-small">
                   <div class="hero-body">
                     <Hero />
@@ -180,11 +183,11 @@ const winIcons = {
           <footer class="card-footer">
             <div class="card-footer-item">
               <span class="is-size-7">
-                Status: <strong class="has-text-success">Online</strong>
+                Status: <strong class="">Online</strong>
               </span>
             </div>
             <div class="card-footer-item">
-              <a href="#" class="is-size-7">
+              <a href="#" class="">
                 <span class="icon"><i class="fab fa-github"></i></span>
                 Source Code
               </a>

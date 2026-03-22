@@ -13,6 +13,11 @@ export const skillsData = {
         category: "Consectetur",
         skills: ["Adipiscing", "Elit", "Sed", "Do"],
         status: "IPSUM",
+      },
+      {
+        category: "Lorem 2 Ipsum",
+        skills: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"],
+        status: "LOREM",
       }
     ]
   },

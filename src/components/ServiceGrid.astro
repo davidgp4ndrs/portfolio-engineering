@@ -15,7 +15,7 @@ const { data, uiConfig } = Astro.props;
   <div class="columns is-multiline">
     {
       data.items.map((service) => (
-        <div class="column is-4">
+        <div class="column column is-12-mobile is-6-tablet is-6-desktop">
           <article class="media">
             <figure class="media-left">
               <span class="icon">
@@ -24,11 +24,9 @@ const { data, uiConfig } = Astro.props;
             </figure>
             <div class="media-content">
               <div class="content">
-                <p>
-                  <strong class="">{service.title}</strong>
-                  <br />
-                  <small class="">{service.description}</small>
-                </p>
+                <strong class="">{service.title}</strong>
+                <br />
+                <p class="">{service.description}</p>
                 <ul class="">
                   {service.items.map((item) => (
                     <li>{item}</li>

@@ -1,0 +1,72 @@
+/* ================================================
+   hero.css — Layout responsive del Hero
+   Grid propio sin conflicto con Bulma
+   ================================================ */
+
+/* ── Base: móvil (< 769px) ──
+   Una columna, todo apilado, foto y título centrados */
+.hero-layout {
+  display: grid;
+  grid-template-areas:
+    "photo"
+    "title"
+    "quote";
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.hero-photo {
+  grid-area: photo;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-title {
+  grid-area: title;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-quote {
+  grid-area: quote;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── Tablet (769px – 1023px) ──
+   Tres columnas: foto | título | mensaje */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .hero-layout {
+    grid-template-areas: "photo title quote";
+    grid-template-columns: auto 1fr 1.5fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .hero-title {
+    text-align: left;
+  }
+}
+
+/* ── Desktop (>= 1024px) ──
+   Dos columnas: título | mensaje (foto en sidebar) */
+@media (min-width: 1024px) {
+  .hero-layout {
+    grid-template-areas: "title quote";
+    grid-template-columns: 1fr 1.5fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .hero-photo {
+    display: none;
+  }
+
+  .hero-title {
+    text-align: left;
+  }
+}

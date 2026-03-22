@@ -7,15 +7,15 @@ const { data, config } = Astro.props;
     <span class="icon mr-2">
       <i class={config.sectionIcon}></i>
     </span>
-    <h2 class="title is-4">{data.sectionTitle}</h2>
-    <span class="tag is-rounded ml-3">v.1.0.2</span>
+    <h2 class="title">{data.sectionTitle}</h2>
+    <span class="tag ml-3">v.1.0.2</span>
   </div>
 </div>
 
 <div class="columns is-multiline">
   {
     data.items.map((item) => (
-      <div class="column is-4">
+      <div class="column is-12-mobile is-6-tablet is-6-desktop">
         <div
           class="box is-shadowless"
           style="border: 1px solid var(--bulma-border-weak); height: 100%;"
@@ -24,14 +24,14 @@ const { data, config } = Astro.props;
             <div class="media-content">
               <div class="content">
                 <div class="is-flex is-justify-content-space-between is-align-items-flex-start">
-                  <h3 class="title is-5 mb-2">{item.title}</h3>
-                  <span class="tag is-light is-size-7">{item.period}</span>
+                  <h3 class="title mb-2">{item.title}</h3>
+                  <span class="tag">{item.period}</span>
                 </div>
-                <p class="subtitle is-6 has-text-link mb-3">{item.role}</p>
-                <p class="is-size-6">{item.description}</p>
+                <p class="subtitle mb-3">{item.role}</p>
+                <p class="">{item.description}</p>
                 <div class="tags">
                   {item.tags.map((tag) => (
-                    <span class="tag is-info is-light is-small">{tag}</span>
+                    <span class="tag">{tag}</span>
                   ))}
                 </div>
               </div>
