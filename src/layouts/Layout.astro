@@ -4,6 +4,8 @@ import Sidebar from "../components/Sidebar.astro";
 import Hero from "../components/Hero.astro";
 import Tabs from "../components/Tabs.astro";
 
+import Analytics from "@vercel/analytics/astro";
+
 import "@fontsource/dm-sans/400.css";
 import "@fontsource/dm-sans/500.css";
 import "@fontsource/dm-sans/700.css";
@@ -182,5 +184,6 @@ const isActive = (path: string) => {
 
     <script src="/js/theme.js" is:inline></script>
     <script src="/js/lang.js" is:inline></script>
+    <Analytics />
   </body>
 </html>
