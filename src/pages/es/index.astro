@@ -1,4 +1,5 @@
 ---
+import Layout from "../../layouts/Layout.astro";
 import IndexTemplate from "../../components/IndexTemplate.astro";
 import { indexContent } from "../../data/indexContent";
 
@@ -8,4 +9,6 @@ const config = {
 };
 ---
 
-<IndexTemplate content={indexContent.es} {...config} />
+<Layout title="Portfolio">
+  <IndexTemplate content={indexContent.es} {...config} />
+</Layout>

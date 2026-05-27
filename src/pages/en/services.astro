@@ -1,13 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ServiceGrid from "../../components/ServiceGrid.astro";
-import { servicesData } from "../../data/servicesData";
-
-const uiConfig = {
-  headerIcon: "fas fa-layer-group",
-  quoteIcon: "fas fa-terminal",
-};
 ---
 <Layout title="Services | Portfolio">
-  <ServiceGrid data={servicesData.en} uiConfig={uiConfig} />
+  <ServiceGrid />
 </Layout>

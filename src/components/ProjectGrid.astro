@@ -1,55 +1,178 @@
 ---
-const { data, config } = Astro.props;
+// src/components/ProjectGrid.astro
+import { projectsData } from "../data/projectsData";
+
+const { pathname } = Astro.url;
+const lang = pathname.startsWith("/en") ? "en" : "es";
+const data = projectsData[lang];
+
+const labels = {
+  es: {
+    results: "Resultados",
+    back: "Volver",
+    repo: "Repositorio",
+    demo: "Demo",
+  },
+  en: { results: "Results", back: "Back", repo: "Repository", demo: "Demo" },
+};
+const ui = labels[lang];
 ---
 
-<div class="container mb-5">
-  <div class="is-flex is-align-items-center">
-    <span class="icon mr-2">
-      <i class={config.sectionIcon}></i>
-    </span>
-    <h2 class="title">{data.sectionTitle}</h2>
-    <span class="tag ml-3">v.1.0.2</span>
-  </div>
-</div>
-
-<div class="columns is-multiline">
+<div class="pg-grid" id="projects-grid">
   {
-    data.items.map((item) => (
-      <div class="column is-12-mobile is-6-tablet is-6-desktop">
+    data.items.map((item: any, index: number) => {
+      // Determinar la clase de estado dinámicamente según tus datos
+      const statusClass =
+        item.status?.toLowerCase().includes("active") ||
+        item.status?.toLowerCase().includes("activo")
+          ? "pg-status--active"
+          : "pg-status--concept";
+
+      return (
         <div
-          class="box is-shadowless"
-          style="border: 1px solid var(--bulma-border-weak); height: 100%;"
+          class="pg-card"
+          data-project-index={index}
+          role="button"
+          tabindex="0"
+          aria-label={item.title}
         >
-          <article class="media">
-            <div class="media-content">
-              <div class="content">
-                <div class="is-flex is-justify-content-space-between is-align-items-flex-start">
-                  <h3 class="title mb-2">{item.title}</h3>
-                  <span class="tag">{item.period}</span>
-                </div>
-                <p class="subtitle mb-3">{item.role}</p>
-                <p class="">{item.description}</p>
-                <div class="tags">
-                  {item.tags.map((tag) => (
-                    <span class="tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </article>
+          <p class="pg-title">{item.title}</p>
+
+          <p class="pg-role">{item.role}</p>
+
+          <p class="pg-desc">{item.description}</p>
+
+          <div class="pg-tags">
+            {item.tags.slice(0, 3).map((t: string) => (
+              <span class="pg-tag">{t}</span>
+            ))}
+          </div>
         </div>
-      </div>
-    ))
+      );
+    })
   }
 </div>
 
-<div class="container mt-3">
-  <div class="is-flex is-justify-content-flex-end">
-    <p class="is-size-7 has-text-grey">
-      <span class="icon is-small">
-        <i class={config.noteIcon}></i>
+<div id="project-detail" class="pg-detail" style="display:none;">
+  <div class="pg-detail-content">
+    <div class="pg-detail-header">
+      <div>
+        <h3 class="pg-detail-title" id="proj-detail-title"></h3>
+        <p class="pg-detail-role" id="proj-detail-role"></p>
+      </div>
+      <span class="pg-detail-status" id="proj-detail-status"></span>
+    </div>
+
+    <p class="pg-detail-desc" id="proj-detail-description"></p>
+
+    <div id="proj-detail-links" class="pg-detail-links"></div>
+
+    <div id="proj-detail-results" class="pg-detail-section"></div>
+
+    <div class="pg-detail-section">
+      <div class="pg-tags" id="proj-detail-tags"></div>
+    </div>
+  </div>
+
+  <div class="pg-back-wrapper">
+    <button id="proj-detail-close" class="pg-back">
+      <span class="icon">
+        <i class="fa-solid fa-circle-left"></i>
       </span>
-      {data.note}: <strong class="has-text-success">{data.status}</strong>
-    </p>
+      <span>
+        {ui.back}
+      </span>
+    </button>
   </div>
 </div>
+
+<script define:vars={{ items: data.items, ui }}>
+  function setupProjects() {
+    const cards = document.querySelectorAll("[data-project-index]");
+    const panel = document.getElementById("project-detail");
+    const grid = document.getElementById("projects-grid");
+    const titleEl = document.getElementById("proj-detail-title");
+    const roleEl = document.getElementById("proj-detail-role");
+    const statusEl = document.getElementById("proj-detail-status");
+    const descEl = document.getElementById("proj-detail-description");
+    const resEl = document.getElementById("proj-detail-results");
+    const tagsEl = document.getElementById("proj-detail-tags");
+    const linksEl = document.getElementById("proj-detail-links");
+    const closeBtn = document.getElementById("proj-detail-close");
+
+    if (!panel || !grid) return;
+
+    function showDetail(index) {
+      const item = items[index];
+      if (!item) return;
+
+      grid.style.display = "none";
+      panel.style.display = "block";
+
+      if (titleEl) titleEl.textContent = item.title;
+      if (roleEl) roleEl.textContent = item.role;
+      if (statusEl) statusEl.textContent = item.period + " · " + item.status;
+      if (descEl) descEl.textContent = item.detail.longDescription;
+
+      if (resEl) {
+        resEl.innerHTML = item.detail.results?.length
+          ? `<p class="pg-detail-label">${ui.results}</p>
+             <ul class="pg-results-list">
+               ${item.detail.results.map((r) => `<li>${r}</li>`).join("")}
+             </ul>`
+          : "";
+      }
+
+      if (tagsEl) {
+        tagsEl.innerHTML = item.tags
+          .map((t) => `<span class="pg-tag">${t}</span>`)
+          .join("");
+      }
+
+      if (linksEl) {
+        const links = [];
+        if (item.detail.links?.repo) {
+          links.push(`
+            <a href="${item.detail.links.repo}" target="_blank" rel="noopener" class="button is-small is-link is-light">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>${ui.repo}</span>
+            </a>`);
+        }
+        if (item.detail.links?.demo) {
+          links.push(`
+            <a href="${item.detail.links.demo}" target="_blank" rel="noopener" class="button is-small is-primary is-light">
+              <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+              <span>${ui.demo}</span>
+            </a>`);
+        }
+        linksEl.innerHTML = links.join("");
+      }
+
+      document
+        .querySelector(".content-scroll")
+        ?.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function closeDetail() {
+      panel.style.display = "none";
+      grid.style.display = "";
+      window.dispatchEvent(new CustomEvent("hero:reset"));
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        showDetail(parseInt(card.dataset.projectIndex || "0"));
+      });
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          showDetail(parseInt(card.dataset.projectIndex || "0"));
+        }
+      });
+    });
+
+    closeBtn?.addEventListener("click", closeDetail);
+  }
+
+  document.addEventListener("astro:page-load", setupProjects);
+</script>

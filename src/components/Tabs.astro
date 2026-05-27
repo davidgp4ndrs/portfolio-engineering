@@ -1,49 +1,65 @@
 ---
+// src/components/Tabs.astro
 const { pathname } = Astro.url;
+const lang = pathname.startsWith("/en") ? "en" : "es";
 
-// 1. Detección de idioma
-const isEnglish = pathname.startsWith("/en");
-const lang = isEnglish ? "en" : "es";
-
-// 2. Diccionario con marcas de idioma y Lorem Ipsum
 const labels = {
-  es: ["Inicio ES", "Lorem ES", "Ipsum ES", "Dolor ES"],
-  en: ["Home EN", "Lorem EN", "Ipsum EN", "Dolor EN"],
+  es: [
+    { label: "Inicio", path: `/${lang}/`, icon: "fas fa-home" },
+    {
+      label: "Servicios",
+      path: `/${lang}/services`,
+      icon: "fas fa-broadcast-tower",
+    },
+    {
+      label: "Proyectos",
+      path: `/${lang}/experience`,
+      icon: "fas fa-layer-group",
+    },
+    { label: "Competencias", path: `/${lang}/skills`, icon: "fas fa-terminal" },
+    { label: "Contacto", path: `/${lang}/contact`, icon: "fas fa-paper-plane" },
+  ],
+  en: [
+    { label: "Home", path: `/${lang}/`, icon: "fas fa-home" },
+    {
+      label: "Services",
+      path: `/${lang}/services`,
+      icon: "fas fa-broadcast-tower",
+    },
+    {
+      label: "Projects",
+      path: `/${lang}/experience`,
+      icon: "fas fa-layer-group",
+    },
+    { label: "Competencies", path: `/${lang}/skills`, icon: "fas fa-terminal" },
+    { label: "Contact", path: `/${lang}/contact`, icon: "fas fa-paper-plane" },
+  ],
 };
-const t = labels[lang];
 
-// 3. Rutas (He actualizado los iconos para que sean consistentes con un perfil de ingeniería)
-const navItems = [
-  { path: `/${lang}/`, label: t[0], icon: "fas fa-home" },
-  { path: `/${lang}/services`, label: t[1], icon: "fas fa-microchip" },
-  { path: `/${lang}/experience`, label: t[2], icon: "fas fa-layer-group" },
-  { path: `/${lang}/skills`, label: t[3], icon: "fas fa-terminal" },
-];
-
-// 4. Lógica is-active
+const nav = labels[lang];
 const currentPath = pathname.replace(/\/$/, "") || `/${lang}`;
-
-const getActiveClass = (path: string) => {
-  const targetPath = path.replace(/\/$/, "") || `/${lang}`;
-  return currentPath === targetPath ? "is-active" : "";
+const isActive = (path: string) => {
+  const target = path.replace(/\/$/, "") || `/${lang}`;
+  return currentPath === target;
 };
 ---
 
-<nav class="tabs is-boxed mt-2">
-  <div class="container">
-    <ul>
-      {
-        navItems.map((item) => (
-          <li class={getActiveClass(item.path)}>
-            <a href={item.path}>
-              <span class="icon">
+<div class="tabs is-boxed is-fullwidth">
+  <ul>
+    {
+      nav.map((item) => {
+        const active = isActive(item.path);
+        return (
+          <li class={active ? "is-active" : ""}>
+            <a href={item.path} aria-current={active ? "page" : undefined}>
+              <span class="icon is-small" aria-hidden="true">
                 <i class={item.icon} />
               </span>
-              <span class="is-hidden-mobile">{item.label}</span>
+              <span class="tb-label">{item.label}</span>
             </a>
           </li>
-        ))
-      }
-    </ul>
-  </div>
-</nav>
+        );
+      })
+    }
+  </ul>
+</div>

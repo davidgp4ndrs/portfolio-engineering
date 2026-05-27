@@ -1,0 +1,363 @@
+/* ==============================================
+   mobile.css — Responsive layout
+   ============================================== */
+
+/* ──────────────────────────────────────────────
+   TABLET (768px – 1023px)
+   ────────────────────────────────────────────── */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  /* Scroll natural */
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  main.section {
+    height: auto;
+  }
+
+  main.section>.container {
+    height: auto;
+    max-height: none;
+  }
+
+  .card {
+    flex: none;
+    overflow: visible;
+  }
+
+  .card-content {
+    overflow: visible;
+  }
+
+  .app-columns {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content-column {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content-scroll {
+    flex: none;
+    overflow: visible;
+    height: auto;
+  }
+
+  /* Ocultar sidebar */
+  .sidebar-wrapper {
+    display: none !important;
+  }
+
+  /* Mostrar tabs */
+  .tb-wrapper {
+    display: flex;
+  }
+
+  /* Mantener 2 columnas en tablet */
+  .sg-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pg-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sk-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+/* ──────────────────────────────────────────────
+   MOBILE (≤ 767px)
+   ────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* Scroll natural */
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  main.section {
+    height: auto;
+    padding: 0;
+  }
+
+  main.section>.container {
+    height: auto;
+    max-height: none;
+  }
+
+  .card {
+    flex: none;
+    overflow: visible;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .card-content {
+    overflow: visible;
+  }
+
+  .app-columns {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content-column {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content-scroll {
+    flex: none;
+    overflow: visible;
+    height: auto;
+    padding-bottom: 4.5rem;
+  }
+
+  /* Ocultar sidebar y tabs */
+  .sidebar-wrapper {
+    display: none !important;
+  }
+
+  .tb-wrapper {
+    display: none !important;
+  }
+
+  /* Ocultar puntos ventana */
+  .win-dot {
+    display: none;
+  }
+
+  /* Una columna */
+  .sg-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pg-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sk-body {
+    grid-template-columns: 1fr;
+  }
+
+  .sg-card:last-child:nth-child(odd) {
+    grid-column: auto;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  /* Footer nav */
+  .card-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex !important;
+    justify-content: space-around;
+    align-items: center;
+    height: 56px;
+    padding: 0;
+    background-color: var(--cv-card-bg);
+    border-top: 1px solid var(--cv-border);
+  }
+
+  /* Ocultar items originales del footer */
+  .card-footer-item {
+    display: none !important;
+  }
+
+  /* Nav items en footer */
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    text-decoration: none;
+    color: var(--cv-text-muted);
+    font-size: 0.58rem;
+    flex: 1;
+    height: 100%;
+    padding: 0.25rem 0;
+    transition: color 0.15s ease;
+  }
+
+  .mobile-nav-item.is-active {
+    color: var(--cv-accent);
+  }
+
+  .mobile-nav-item .icon {
+    font-size: 1rem;
+  }
+
+  [data-theme="dark"] .card-footer {
+    background-color: var(--cv-header-bg);
+    border-color: var(--cv-border);
+  }
+}
+
+/* ──────────────────────────────────────────────
+   TABS — estilos (visible solo en tablet via .tb-wrapper)
+   ────────────────────────────────────────────── */
+
+.tb-wrapper {
+  display: none;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.tb-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tb-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--cv-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.tb-tab:hover {
+  color: var(--cv-text);
+  background-color: var(--cv-border-weak);
+}
+
+.tb-tab--active {
+  color: var(--cv-accent);
+  background-color: var(--cv-accent-soft);
+  font-weight: 600;
+}
+
+.tb-tab--active:hover {
+  color: var(--cv-accent);
+  background-color: var(--cv-accent-soft);
+}
+
+[data-theme="dark"] .tb-tab:hover {
+  background-color: var(--cv-border-weak);
+}
+
+[data-theme="dark"] .tb-tab--active {
+  background-color: var(--cv-accent-soft);
+}
+
+.hero-tab {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-tab {
+    display: block;
+  }
+}
+
+/* Visible en mobile — solo iconos */
+@media (max-width: 767px) {
+  .hero-tab {
+    display: block;
+  }
+
+  /* Ocultar texto en mobile */
+  .tb-label {
+    display: none;
+  }
+}
+
+/* En styles.css o en un bloque específico */
+
+/* El tab activo debe tener el fondo del contenido */
+.tabs.is-boxed li.is-active a {
+  background-color: var(--cv-card-bg) !important;
+  border-color: var(--cv-border) !important;
+  border-bottom-color: var(--cv-card-bg) !important;
+  color: var(--cv-accent) !important;
+}
+
+
+/* Hover */
+.tabs.is-boxed li:not(.is-active) a:hover {
+  background-color: var(--cv-border-weak) !important;
+  border-color: var(--cv-border) !important;
+  color: var(--cv-text) !important;
+}
+
+/* Dark mode */
+[data-theme="dark"] .tabs.is-boxed li.is-active a {
+  background-color: var(--cv-card-bg) !important;
+  border-bottom-color: var(--cv-card-bg) !important;
+  color: var(--cv-accent) !important;
+}
+
+[data-theme="dark"] .tabs.is-boxed ul {
+  border-bottom-color: var(--cv-border) !important;
+}
+
+/* ── Font scale by breakpoint ── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tb-label {
+    font-size: 0.72rem;
+  }
+
+  .hero-headline {
+    font-size: 0.9rem;
+  }
+
+  .sg-title,
+  .pg-title,
+  .sk-category {
+    font-size: 0.85rem;
+  }
+
+  .sg-desc,
+  .pg-desc,
+  .sk-detail,
+  .sk-item {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-headline {
+    font-size: 0.85rem;
+  }
+
+  .sg-title,
+  .pg-title,
+  .sk-category {
+    font-size: 0.82rem;
+  }
+
+  .sg-desc,
+  .pg-desc,
+  .sk-detail,
+  .sk-item {
+    font-size: 0.73rem;
+  }
+}

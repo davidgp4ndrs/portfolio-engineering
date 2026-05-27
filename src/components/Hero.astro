@@ -1,54 +1,125 @@
 ---
-import ImgUser from "../assets/3.png";
 import { heroData } from "../data/hero";
+import ImgUser from "../assets/img.png";
 
 const { pathname } = Astro.url;
 const lang = pathname.startsWith("/en") ? "en" : "es";
-const t = heroData[lang];
+const segment = pathname.replace(/^\/(es|en)\/?/, "").replace(/\/$/, "");
 
-const heroConfig = {
-  icons: {
-    status: "fas fa-terminal",
-    quote: "fas fa-quote-left",
-  },
+const sectionMap: Record<string, string> = {
+  "": "default",
+  services: "services",
+  experience: "experience",
+  skills: "skills",
+  contact: "contact",
 };
+
+const section = sectionMap[segment] ?? "default";
+const t = heroData[lang][section as keyof typeof heroData.en];
+const sectionDefault = t;
+const isHome = section === "default";
 ---
 
-<div class="hero-layout">
-
-  <!-- Foto: oculta en desktop via CSS, visible en tablet y móvil -->
-  <div class="hero-photo">
-    <figure class="image is-128x128">
-      <img src={ImgUser.src} alt="Profile" class="is-rounded" />
-    </figure>
-  </div>
-
-  <!-- Título y subtitle -->
-  <div class="hero-title">
-    <p class="title">{t.title}</p>
-    <p class="subtitle">
-      <span class="icon mr-2">
-        <i class={heroConfig.icons.status}></i>
-      </span>
-      {t.subtitle}
-    </p>
-  </div>
-
-  <!-- Cita y tags -->
-  <div class="hero-quote">
-    <article class="message">
-      <div class="message-body">
-        <div class="is-flex is-align-items-center">
-          <span class="icon mr-2">
-            <i class={heroConfig.icons.quote}></i>
-          </span>
-          <p set:html={t.message} />
-        </div>
-      </div>
-    </article>
-    <div class="tags">
-      {t.tags.map((tag) => <span class="tag">{tag}</span>)}
+<div class={`hero-wrapper ${isHome ? "is-home" : ""}`}>
+  <div class="hero-view-desktop">
+    <p class="hero-headline js-hero-title">{t.headline}</p>
+    {
+      /* En Inicio el subtitle viene vacío "" por lo que no renderizará texto extra */
+    }
+    <p class="hero-subtitle js-hero-subtitle">{t.subtitle}</p>
+    <div class="hero-tags js-hero-tags">
+      {t.tags.map((tag) => <span class="hero-tag">{tag}</span>)}
     </div>
   </div>
 
+  <div class="hero-view-tablet">
+    <div class="hero-tablet-container">
+      <figure class="hero-avatar">
+        <img
+          src={ImgUser.src}
+          alt="Profile photo"
+          width="96"
+          height="96"
+          loading="eager"
+        />
+      </figure>
+      <div class="hero-text-wrapper">
+        <h1 class="title is-5 mb-1">{t.name}</h1>
+        <p class="hero-headline js-hero-title">{t.headline}</p>
+        <p class="hero-subtitle js-hero-subtitle">{t.subtitle}</p>
+        <div class="hero-tags js-hero-tags">
+          {t.tags.map((tag) => <span class="hero-tag">{tag}</span>)}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-view-mobile">
+    <figure class="hero-avatar">
+      <img
+        src={ImgUser.src}
+        alt="Profile photo"
+        width="96"
+        height="96"
+        loading="eager"
+      />
+    </figure>
+    <h1 class="title is-5 mb-1">{t.name}</h1>
+    <p class="hero-headline js-hero-title">{t.headline}</p>
+    <p class="hero-subtitle js-hero-subtitle">{t.subtitle}</p>
+    <div class="hero-tags js-hero-tags">
+      {t.tags.map((tag) => <span class="hero-tag">{tag}</span>)}
+    </div>
+  </div>
 </div>
+
+<script define:vars={{ sectionDefault }}>
+  function setupHero() {
+    const wrapper = document.querySelector(".hero-wrapper");
+    const titles = document.querySelectorAll(".js-hero-title");
+    const subtitles = document.querySelectorAll(".js-hero-subtitle"); // 👈 Capturamos los subtítulos
+    const tagsContainers = document.querySelectorAll(".js-hero-tags");
+
+    function renderTags(container, tags) {
+      if (!container) return;
+      container.innerHTML = tags
+        .map((tag) => `<span class="hero-tag">${tag}</span>`)
+        .join("");
+    }
+
+    function updateHeroUI(headline, subtitle, tags, setAsHome) {
+      // 1. Actualizar títulos y subtítulos dinámicamente
+      titles.forEach((el) => (el.textContent = headline));
+      subtitles.forEach((el) => (el.textContent = subtitle || "")); // 👈 Inyectamos el nuevo subtítulo
+
+      // 2. Actualizar las etiquetas (tags)
+      tagsContainers.forEach((container) => renderTags(container, tags));
+
+      // 3. El interruptor maestro de CSS
+      if (wrapper) {
+        if (setAsHome) {
+          wrapper.classList.add("is-home");
+        } else {
+          wrapper.classList.remove("is-home");
+        }
+      }
+    }
+
+    window.addEventListener("hero:update", (e) => {
+      // Al cambiar de página pasamos el subtítulo que venga en el evento
+      updateHeroUI(e.detail.headline, e.detail.subtitle, e.detail.tags, false);
+    });
+
+    window.addEventListener("hero:reset", () => {
+      // Al resetear volvemos a la configuración inicial por defecto
+      updateHeroUI(
+        sectionDefault.headline,
+        sectionDefault.subtitle,
+        sectionDefault.tags,
+        true,
+      );
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupHero);
+</script>

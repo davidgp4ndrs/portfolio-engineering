@@ -1,58 +1,133 @@
 ---
-const { data, uiConfig } = Astro.props;
+// src/components/ServiceGrid.astro
+import { servicesData } from "../data/servicesData";
+
+const { pathname } = Astro.url;
+const lang = pathname.startsWith("/en") ? "en" : "es";
+const data = servicesData[lang];
+
+const labels = {
+  es: { methodology: "Metodología", tools: "Herramientas", back: "Volver" },
+  en: { methodology: "Methodology", tools: "Tools", back: "Back" },
+};
+const ui = labels[lang];
 ---
 
-<div class="container mb-5 mt-0">
-  <div class="is-flex is-align-items-center">
-    <span class="icon mr-2">
-      <i class={uiConfig.headerIcon}></i>
-    </span>
-    <h2 class="title">{data.header}</h2>
-  </div>
+<div class="sg-grid" id="services-grid">
+  {
+    data.items.map((service: any, index: number) => (
+      <div
+        class="sg-card"
+        data-service-index={index}
+        role="button"
+        tabindex="0"
+        aria-label={service.title}
+      >
+        <div class="sg-header">
+          <span class="sg-icon" aria-hidden="true">
+            <i class={service.icon} />
+          </span>
+          <p class="sg-title">{service.title}</p>
+        </div>
+        <p class="sg-desc">{service.description}</p>
+        <div class="sg-tags">
+          {service.detail.tools.slice(0, 3).map((tool: string) => (
+            <span class="sg-tag">{tool}</span>
+          ))}
+        </div>
+      </div>
+    ))
+  }
 </div>
 
-<div class="container">
-  <div class="columns is-multiline">
-    {
-      data.items.map((service) => (
-        <div class="column column is-12-mobile is-6-tablet is-6-desktop">
-          <article class="media">
-            <figure class="media-left">
-              <span class="icon">
-                <i class={service.icon || uiConfig.serviceIcon} />
-              </span>
-            </figure>
-            <div class="media-content">
-              <div class="content">
-                <strong class="">{service.title}</strong>
-                <br />
-                <p class="">{service.description}</p>
-                <ul class="">
-                  {service.items.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </article>
-        </div>
-      ))
-    }
+<div id="service-detail" class="sg-detail" style="display:none;">
+  <div class="sg-detail-content">
+    <h3 class="sg-detail-title" id="detail-title"></h3>
+    <p class="sg-detail-desc" id="detail-description"></p>
 
-    <div class="column is-12">
-      <article class="message">
-        <div class="message-body">
-          <div class="is-flex is-align-items-center">
-            <span class="icon mr-2">
-              <i class={uiConfig.quoteIcon}></i>
-            </span>
-            <p class="">
-              {data.footerQuote}
-              <code>system.status</code>
-            </p>
-          </div>
-        </div>
-      </article>
+    <div id="detail-methodology" class="sg-detail-section"></div>
+
+    <div class="sg-detail-section">
+      <p class="sg-detail-label">{ui.tools}</p>
+      <div class="sg-tags" id="detail-tools"></div>
     </div>
   </div>
+
+  <div class="sg-back-wrapper">
+    <button id="detail-close" class="sg-back">
+      <span class="icon">
+        <i class="fa-solid fa-circle-left"></i>
+      </span>
+      <span>
+        {ui.back}
+      </span>
+    </button>
+  </div>
 </div>
+
+<script define:vars={{ items: data.items, ui }}>
+  function setupServices() {
+    const cards = document.querySelectorAll("[data-service-index]");
+    const panel = document.getElementById("service-detail");
+    const grid = document.getElementById("services-grid");
+    const titleEl = document.getElementById("detail-title");
+    const descEl = document.getElementById("detail-description");
+    const methEl = document.getElementById("detail-methodology");
+    const toolsEl = document.getElementById("detail-tools");
+    const closeBtn = document.getElementById("detail-close");
+
+    if (!panel || !grid) return;
+
+    function showDetail(index) {
+      const item = items[index];
+      if (!item) return;
+
+      grid.style.display = "none";
+      panel.style.display = "block";
+
+      if (titleEl) titleEl.textContent = item.title;
+      if (descEl) descEl.textContent = item.description;
+
+      if (methEl) {
+        methEl.innerHTML = item.detail.methodology?.length
+          ? `<p class="sg-detail-label">${ui.methodology}</p>
+             <ol class="sg-method-list">
+               ${item.detail.methodology.map((s) => `<li>${s}</li>`).join("")}
+             </ol>`
+          : "";
+      }
+
+      if (toolsEl) {
+        toolsEl.innerHTML = item.detail.tools
+          .map((t) => `<span class="sg-tag">${t}</span>`)
+          .join("");
+      }
+
+      document
+        .querySelector(".content-scroll")
+        ?.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function closeDetail() {
+      panel.style.display = "none";
+      grid.style.display = "";
+      window.dispatchEvent(new CustomEvent("hero:reset"));
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        showDetail(parseInt(card.dataset.serviceIndex || "0"));
+      });
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          showDetail(parseInt(card.dataset.serviceIndex || "0"));
+        }
+      });
+    });
+
+    closeBtn?.addEventListener("click", closeDetail);
+  }
+
+  document.addEventListener("astro:page-load", setupServices);
+</script>

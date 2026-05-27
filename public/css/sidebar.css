@@ -1,0 +1,141 @@
+/* ==============================================
+   sidebar.css — Sidebar layout and navigation
+   ============================================== */
+
+/* ── Profile zone ── */
+.sb-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem 1rem;
+  text-align: center;
+}
+
+.sb-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  border: 2px solid var(--cv-border);
+}
+
+.sb-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sb-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cv-text);
+  margin: 0 0 0.2rem;
+}
+
+.sb-role {
+  font-size: 0.7rem;
+  color: var(--cv-text-muted);
+  line-height: 1.4;
+  margin: 0 0 0.5rem;
+}
+
+.sb-availability {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.65rem;
+  color: #22c55e;
+  margin: 0;
+}
+
+.sb-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: sb-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sb-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ── Divider ── */
+.sb-divider {
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--cv-border);
+}
+
+/* ── Navigation ── */
+.sb-nav {
+  padding: 0.75rem 0.5rem;
+}
+
+.sb-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+/* ── Nav link ── */
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--cv-text-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sb-link:hover {
+  color: var(--cv-text);
+  background-color: var(--cv-border-weak);
+  border-left-color: var(--cv-border);
+}
+
+/* ── Active link ── */
+.sb-link--active {
+  color: var(--cv-accent);
+  background-color: var(--cv-accent-soft);
+  border-left-color: var(--cv-accent);
+  font-weight: 600;
+}
+
+.sb-link--active:hover {
+  color: var(--cv-accent);
+  background-color: var(--cv-accent-soft);
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] .sb-link:hover {
+  background-color: var(--cv-border-weak);
+  color: var(--cv-text);
+}
+
+[data-theme="dark"] .sb-link--active {
+  background-color: var(--cv-accent-soft);
+  color: var(--cv-accent);
+}

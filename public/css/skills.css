@@ -1,0 +1,117 @@
+/* ==============================================
+   skills.css — Competencies grid component
+   ============================================== */
+
+/* ── Grid 2x2 ── */
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1023px) {
+  .sk-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* ── Card ── */
+/* ── Card ── */
+.sk-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background-color: transparent;
+  border-radius: 8px;
+  /* Añadimos un radio de borde para que el fondo sutil no termine en esquinas rectas */
+  cursor: default;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* 👈 NUEVA REGLA: Fondo sutil en Hover para Modo Claro */
+.sk-card:hover {
+  transform: translateY(-3px);
+  background-color: var(--cv-card-bg-alt, rgba(0, 0, 0, 0.02));
+  box-shadow: 0 4px 12px var(--cv-shadow-sm, rgba(0, 0, 0, 0.03));
+}
+
+/* ── Category title ── */
+.sk-category {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cv-text);
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--cv-border-weak);
+}
+
+/* ── Body — dos columnas en escritorio/tablet ── */
+.sk-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* 👈 AJUSTE RESPONSIVO PROTECTOR: Una columna en móviles para evitar estrangulamiento */
+@media (max-width: 600px) {
+  .sk-body {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Detail — left column ── */
+.sk-detail {
+  font-size: 0.75rem;
+  color: var(--cv-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── List — right column ── */
+.sk-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* ── Skill item ── */
+.sk-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.74rem;
+  color: var(--cv-text-muted);
+  line-height: 1.4;
+}
+
+.sk-dot {
+  color: var(--cv-accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] .sk-category {
+  border-bottom-color: var(--cv-border);
+}
+
+
+/* ── Dark mode ── */
+[data-theme="dark"] .sk-category {
+  border-bottom-color: var(--cv-border);
+}
+
+/* 👈 NUEVA REGLA: Fondo sutil en Hover para Modo Oscuro */
+[data-theme="dark"] .sk-card:hover {
+  background-color: var(--cv-tag-bg, rgba(255, 255, 255, 0.03));
+}

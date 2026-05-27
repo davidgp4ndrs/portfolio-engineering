@@ -1,41 +1,142 @@
+// src/data/skillsData.ts
+
 export const skillsData = {
-  es: {
-    header: "Español",
-    footerText: "Lorem ipsum dolor sit amet:",
-    footerValue: "LOREM_IPSUM_V1",
-    groups: [
-      {
-        category: "Lorem Ipsum",
-        skills: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"],
-        status: "LOREM",
-      },
-      {
-        category: "Consectetur",
-        skills: ["Adipiscing", "Elit", "Sed", "Do"],
-        status: "IPSUM",
-      },
-      {
-        category: "Lorem 2 Ipsum",
-        skills: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"],
-        status: "LOREM",
-      }
-    ]
-  },
   en: {
-    header: "English",
-    footerText: "Lorem ipsum dolor sit amet:",
-    footerValue: "LOREM_IPSUM_V1",
+    header: "Core Competencies",
     groups: [
       {
-        category: "Lorem Ipsum",
-        skills: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"],
-        status: "LOREM",
+        category: "Telecommunications & RF",
+        status: "Advanced",
+        detail: "Radiolink planning, coverage analysis and antenna systems for wireless infrastructure deployment.",
+        skills: [
+          "Radiolink Planning P2P/P2MP",
+          "Link Budget & Path Loss",
+          "Antenna Selection & Placement",
+          "RF Propagation",
+          "Fiber Optic Installation",
+          "OTDR Testing",
+        ],
       },
       {
-        category: "Consectetur",
-        skills: ["Adipiscing", "Elit", "Sed", "Do"],
-        status: "IPSUM",
-      }
-    ]
-  }
+        category: "Networks & Data Systems",
+        status: "Intermediate",
+        detail: "Design, implementation and documentation of data networks, switching infrastructure and network diagnostics.",
+        skills: [
+          "TCP/IP Stack",
+          "Switching & Routing",
+          "Network Topologies",
+          "Bandwidth & QoS",
+          "Fault Diagnosis",
+          "Broadband Networks",
+          "Data Cabling",
+        ],
+      },
+      {
+        category: "Hardware & Industrial Automation",
+        status: "Intermediate",
+        detail: "Embedded systems, PLC-based industrial control, electrical systems and process instrumentation.",
+        skills: [
+          "Microcontrollers (Arduino, PIC)",
+          "PLC Programming",
+          "SCADA Systems",
+          "Industrial Control",
+          "Digital Electronics",
+          "Power Electronics",
+          "Sensors & Actuators",
+          "Domotics",
+          "Electrical Schematics",
+          "High Voltage Systems",
+          "FPGA (Verilog/VHDL)",
+        ],
+      },
+      {
+        category: "Software & Signal Processing",
+        status: "Intermediate",
+        detail: "Application development, digital signal processing and applied machine learning for engineering systems.",
+        skills: [
+          "C# / .NET Core",
+          "Python",
+          "Avalonia UI",
+          "MVVM Architecture",
+          "DSP (FIR/IIR Filters)",
+          "Audio Processing",
+          "Real-Time Systems",
+          "Machine Learning (basics)",
+          "Deep Learning (LSTM)",
+          "Git & Version Control",
+          "Linux",
+          "LaTeX",
+        ],
+      },
+    ],
+  },
+  es: {
+    header: "Competencias Técnicas",
+    groups: [
+      {
+        category: "Telecomunicaciones y RF",
+        status: "Avanzado",
+        detail: "Planificación de radioenlaces, análisis de cobertura y sistemas de antenas para despliegue de infraestructura inalámbrica.",
+        skills: [
+          "Planificación de Radioenlaces P2P/P2MP",
+          "Link Budget y Path Loss",
+          "Selección y Ubicación de Antenas",
+          "Propagación RF",
+          "Instalación de Fibra Óptica",
+          "Pruebas OTDR",
+        ],
+      },
+      {
+        category: "Redes y Sistemas de Datos",
+        status: "Intermedio",
+        detail: "Diseño, implementación y documentación de redes de datos, infraestructura de switching y diagnóstico de red.",
+        skills: [
+          "Pila TCP/IP",
+          "Switching y Routing",
+          "Topologías de Red",
+          "Ancho de Banda y QoS",
+          "Diagnóstico de Fallos",
+          "Redes de Banda Ancha",
+          "Cableado Estructurado",
+        ],
+      },
+      {
+        category: "Hardware y Automatización Industrial",
+        status: "Intermedio",
+        detail: "Sistemas embebidos, control industrial con PLCs, sistemas eléctricos e instrumentación de procesos.",
+        skills: [
+          "Microcontroladores (Arduino, PIC)",
+          "Programación de PLCs",
+          "Sistemas SCADA",
+          "Control Industrial",
+          "Electrónica Digital",
+          "Electrónica de Potencia",
+          "Sensores y Actuadores",
+          "Domótica",
+          "Esquemas Eléctricos",
+          "Sistemas de Alta Tensión",
+          "FPGA (Verilog/VHDL)",
+        ],
+      },
+      {
+        category: "Software y Procesamiento de Señales",
+        status: "Intermedio",
+        detail: "Desarrollo de aplicaciones, procesamiento digital de señales y aprendizaje automático aplicado a sistemas de ingeniería.",
+        skills: [
+          "C# / .NET Core",
+          "Python",
+          "Avalonia UI",
+          "Arquitectura MVVM",
+          "DSP (Filtros FIR/IIR)",
+          "Procesamiento de Audio",
+          "Sistemas en Tiempo Real",
+          "Machine Learning (básico)",
+          "Deep Learning (LSTM)",
+          "Git y Control de Versiones",
+          "Linux",
+          "LaTeX",
+        ],
+      },
+    ],
+  },
 };

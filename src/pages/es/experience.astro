@@ -1,14 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ProjectGrid from "../../components/ProjectGrid.astro";
-import { projectsData } from "../../data/projectsData";
-
-const config = {
-  sectionIcon: "fas fa-clipboard-list",
-  noteIcon: "fas fa-check-double",
-};
 ---
 
-<Layout title="Proyectos | Ingeniería">
-  <ProjectGrid data={projectsData.es} config={config} />
+<Layout title="Proyectos | Portfolio">
+  <ProjectGrid />
 </Layout>

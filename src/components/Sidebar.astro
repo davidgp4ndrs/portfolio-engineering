@@ -1,97 +1,117 @@
 ---
-import ImgUser from "../assets/3.png";
-import { sidebarLabels } from "../data/ui"; // Importamos tus etiquetas
+// src/components/Sidebar.astro
+import ImgUser from "../assets/img.png";
 
-// Lógica de detección de idioma
 const { pathname } = Astro.url;
-const lang = pathname.startsWith("/es") ? "es" : "en";
-const t = sidebarLabels[lang];
+const lang = pathname.startsWith("/en") ? "en" : "es";
 
-const uiConfig = {
-  icons: {
-    email: "fas fa-envelope",
-    phone: "fas fa-phone",
-    github: "fab fa-github",
-    certDefault: "fas fa-certificate",
-    download: "fas fa-file-pdf",
+const labels = {
+  es: {
+    role: "Ingeniero en Electrónica y Comunicaciones",
+    availability: "Disponibilidad inmediata",
+    nav: [
+      { label: "Inicio", path: `/${lang}/`, icon: "fas fa-home" },
+      {
+        label: "Servicios",
+        path: `/${lang}/services`,
+        icon: "fas fa-broadcast-tower",
+      },
+      {
+        label: "Proyectos",
+        path: `/${lang}/experience`,
+        icon: "fas fa-layer-group",
+      },
+      {
+        label: "Competencias",
+        path: `/${lang}/skills`,
+        icon: "fas fa-terminal",
+      },
+      {
+        label: "Contacto",
+        path: `/${lang}/contact`,
+        icon: "fas fa-paper-plane",
+      },
+    ],
+  },
+  en: {
+    role: "Electronics & Communications Engineer",
+    availability: "Immediate availability",
+    nav: [
+      { label: "Home", path: `/${lang}/`, icon: "fas fa-home" },
+      {
+        label: "Services",
+        path: `/${lang}/services`,
+        icon: "fas fa-broadcast-tower",
+      },
+      {
+        label: "Projects",
+        path: `/${lang}/experience`,
+        icon: "fas fa-layer-group",
+      },
+      {
+        label: "Competencies",
+        path: `/${lang}/skills`,
+        icon: "fas fa-terminal",
+      },
+      {
+        label: "Contact",
+        path: `/${lang}/contact`,
+        icon: "fas fa-paper-plane",
+      },
+    ],
   },
 };
 
-const contactPlaceholder = [
-  { text: "lorem.ipsum@email.com", icon: uiConfig.icons.email },
-  { text: "+00 000 000 000", icon: uiConfig.icons.phone },
-  { text: "github.com/loremipsum", icon: uiConfig.icons.github },
-];
-
-const certificationsPlaceholder = [
-  { name: "Lorem Ipsum Dolor Sit", icon: uiConfig.icons.certDefault },
-  { name: "Consectetur Adipiscing", icon: uiConfig.icons.certDefault },
-  { name: "Sed Do Eiursmod Tempor", icon: uiConfig.icons.certDefault },
-];
+const t = labels[lang];
+const currentPath = pathname.replace(/\/$/, "") || `/${lang}`;
+const isActive = (path: string) => {
+  const target = path.replace(/\/$/, "") || `/${lang}`;
+  return currentPath === target;
+};
 ---
 
-<div class="media mb-3">
-  <div class="media-content">
-    <div class="is-flex is-justify-content-center">
-      <figure class="image is-128x128">
-        <img src={ImgUser.src} alt="Profile" class="is-rounded" />
-      </figure>
-    </div>
-  </div>
+<!-- Profile -->
+<div class="sb-profile">
+  <figure class="sb-avatar">
+    <img
+      src={ImgUser.src}
+      alt="Profile photo"
+      width="88"
+      height="88"
+      loading="eager"
+    />
+  </figure>
+  <p class="sb-name">David Andres Gavilanes</p>
+  <p class="sb-role">{t.role}</p>
+  <p class="sb-availability">
+    <span class="sb-dot" aria-hidden="true"></span>
+    {t.availability}
+  </p>
 </div>
 
-<div class="media mt-1">
-  <div class="menu ml-4">
-    <p class="menu-label">{t.contact}</p>
-    <ul class="menu-list">
-      {
-        contactPlaceholder.map((item) => (
+<hr class="sb-divider" />
+
+<!-- Navigation -->
+<nav class="sb-nav" aria-label="Main navigation">
+  <ul>
+    {
+      t.nav.map((item) => {
+        const active = isActive(item.path);
+        return (
           <li>
-            <div class="px-3 py-1 is-flex is-align-items-center">
-              <span class="icon mr-3">
+            <a
+              href={item.path}
+              class={`sb-link ${active ? "sb-link--active" : ""}`}
+              aria-current={active ? "page" : undefined}
+            >
+              <span class="icon is-small" aria-hidden="true">
                 <i class={item.icon} />
               </span>
-              <span class="is-size-7">{item.text}</span>
-            </div>
+              {item.label}
+            </a>
           </li>
-        ))
-      }
-    </ul>
-
-    <p class="menu-label">{t.certs}</p>
-    <ul class="menu-list">
-      {
-        certificationsPlaceholder.map((cert) => (
-          <li>
-            <div class="px-3 py-1 is-flex is-align-items-center">
-              <span class="icon mr-3">
-                <i class={cert.icon} />
-              </span>
-              <span class="is-size-7">{cert.name}</span>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
-
-    <p class="menu-label">{t.cv}</p>
-    <div class="px-2">
-      <button class="button is-fullwidth is-link is-outlined">
-        <span class="icon">
-          <i class={uiConfig.icons.download}></i>
-        </span>
-        <span>{t.downloadBtn}</span>
-      </button>
-    </div>
-
-    <p class="menu-label">Modal</p>
-    <div class="px-2">
-      <button class="button is-link is-outlined is-fullwidth mt-4 open-contact">
-        <span class="icon">
-          <i class="fas fa-paper-plane"></i>
-        </span>
-        <span>{t.modalBtn}</span>
-      </button>
-    </div>
-  </div>
-</div>
+        );
+      })
+    }
+  </ul>
+</nav>

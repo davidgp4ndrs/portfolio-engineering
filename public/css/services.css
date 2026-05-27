@@ -1,0 +1,274 @@
+/* ==============================================
+   services.css — Service grid component
+   ============================================== */
+
+/* ── Grid — 2 columnas, tercero centrado ── */
+.sg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+}
+
+/* Tercer item centrado en su propia fila */
+.sg-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: calc(50% - 0.5px);
+  justify-self: center;
+  border-right: none;
+}
+
+/* ── Card ── */
+.sg-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem 1.75rem;
+  background-color: var(--cv-card-bg);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sg-card:hover {
+  background-color: var(--cv-border-weak);
+}
+
+.sg-card:focus-visible {
+  outline: 2px solid var(--cv-accent);
+  outline-offset: -2px;
+}
+
+/* ── Header ── */
+.sg-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sg-icon {
+  font-size: 1rem;
+  color: var(--cv-accent);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.sg-card:hover .sg-icon {
+  transform: scale(1.15);
+}
+
+.sg-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cv-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── Description ── */
+.sg-desc {
+  font-size: 0.8rem;
+  color: var(--cv-text-muted);
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Tags ── */
+.sg-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.sg-tag {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: var(--cv-tag-bg);
+  color: var(--cv-tag-text);
+  border: 1px solid var(--cv-border-weak);
+}
+
+/* ── Tablet & Mobile — una columna ── */
+@media (max-width: 1023px) {
+  .sg-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sg-card:last-child:nth-child(odd) {
+    grid-column: auto;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
+
+/* ── Detail panel ── */
+.sg-detail {
+  position: relative;
+  padding-bottom: 4rem;
+  /* Espacio de seguridad para que el texto no pise el botón */
+  width: 100%;
+}
+
+/* Contenedor interno para centrar el contenido y limitar el ancho */
+.sg-detail-content {
+  max-width: 620px;
+  margin: 0 auto;
+  /* Centra todo el bloque de texto */
+}
+
+.sg-detail-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cv-text);
+  margin: 0 0 0.6rem;
+}
+
+.sg-detail-desc {
+  font-size: 0.83rem;
+  color: var(--cv-text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.sg-detail-section {
+  margin-bottom: 1.25rem;
+}
+
+.sg-detail-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cv-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.sg-method-list {
+  font-size: 0.82rem;
+  color: var(--cv-text);
+  line-height: 1.7;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.sg-method-list li {
+  margin-bottom: 0.2rem;
+}
+
+/* ── Back button — bottom right exact position ── */
+.sg-back-wrapper {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sg-back {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--cv-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.15s ease;
+}
+
+.sg-back:hover {
+  opacity: 0.7;
+}
+
+/* ── Dark mode & Rotating colors se mantienen idénticos abajo ── */
+[data-theme="dark"] .sg-card {
+  background-color: var(--cv-card-bg);
+}
+
+[data-theme="dark"] .sg-card:hover {
+  background-color: var(--cv-border-weak);
+}
+
+[data-theme="dark"] .sg-tag {
+  background: var(--cv-tag-bg);
+  color: var(--cv-tag-text);
+  border-color: var(--cv-border);
+}
+
+.sg-tag:nth-child(6n+1) {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.sg-tag:nth-child(6n+2) {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+.sg-tag:nth-child(6n+3) {
+  background: #faf5ff;
+  color: #9333ea;
+  border-color: #e9d5ff;
+}
+
+.sg-tag:nth-child(6n+4) {
+  background: #fff7ed;
+  color: #ea580c;
+  border-color: #fed7aa;
+}
+
+.sg-tag:nth-child(6n+5) {
+  background: #fdf2f8;
+  color: #db2777;
+  border-color: #fbcfe8;
+}
+
+.sg-tag:nth-child(6n+6) {
+  background: #ecfeff;
+  color: #0891b2;
+  border-color: #a5f3fc;
+}
+
+[data-theme="dark"] .sg-tag:nth-child(6n+1) {
+  background: #1e2a3f;
+  color: #60a5fa;
+  border-color: #1e3a5f;
+}
+
+[data-theme="dark"] .sg-tag:nth-child(6n+2) {
+  background: #052e16;
+  color: #4ade80;
+  border-color: #14532d;
+}
+
+[data-theme="dark"] .sg-tag:nth-child(6n+3) {
+  background: #2e1a47;
+  color: #c084fc;
+  border-color: #4c1d95;
+}
+
+[data-theme="dark"] .sg-tag:nth-child(6n+4) {
+  background: #431407;
+  color: #fb923c;
+  border-color: #7c2d12;
+}
+
+[data-theme="dark"] .hero-tag:nth-child(6n+5),
+[data-theme="dark"] .sg-tag:nth-child(6n+5) {
+  background: #500724;
+  color: #f472b6;
+  border-color: #831843;
+}
+
+[data-theme="dark"] .sg-tag:nth-child(6n+6) {
+  background: #083344;
+  color: #22d3ee;
+  border-color: #164e63;
+}

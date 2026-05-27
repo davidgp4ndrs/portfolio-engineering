@@ -1,0 +1,44 @@
+/* ==============================================
+   tokens.css — Design tokens / CSS variables
+   ============================================== */
+
+/* ── Light mode (default) ── */
+:root,
+[data-theme="light"] {
+  --cv-bg: #f0f2f5;
+  --cv-card-bg: #ffffff;
+  --cv-border: #e2e6ea;
+  --cv-border-weak: #edf0f3;
+  --cv-text: #1a1d23;
+  --cv-text-muted: #6b7280;
+  --cv-accent: #2563eb;
+  --cv-accent-soft: #eff6ff;
+  --cv-tag-bg: #f1f5f9;
+  --cv-tag-text: #374151;
+  --cv-header-bg: #f8fafc;
+  --cv-sidebar-bg: #f8fafc;
+  --cv-scrollbar: #d1d5db;
+  --cv-scrollbar-thumb: #9ca3af;
+  --cv-shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 1px 2px rgba(0, 0, 0, .05);
+  --cv-shadow-md: 0 4px 16px rgba(0, 0, 0, .12);
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] {
+  --cv-bg: #0f1117;
+  --cv-card-bg: #1a1d27;
+  --cv-border: #2d3140;
+  --cv-border-weak: #252836;
+  --cv-text: #e8eaf0;
+  --cv-text-muted: #8b929e;
+  --cv-accent: #3b82f6;
+  --cv-accent-soft: #1e2a3f;
+  --cv-tag-bg: #252836;
+  --cv-tag-text: #c9d0dc;
+  --cv-header-bg: #161921;
+  --cv-sidebar-bg: #161921;
+  --cv-scrollbar: #2d3140;
+  --cv-scrollbar-thumb: #4b5266;
+  --cv-shadow: 0 1px 3px rgba(0, 0, 0, .35), 0 1px 2px rgba(0, 0, 0, .25);
+  --cv-shadow-md: 0 4px 16px rgba(0, 0, 0, .45);
+}

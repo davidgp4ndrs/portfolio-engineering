@@ -1,10 +1,13 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import "bulma/css/bulma.min.css";
 import Sidebar from "../components/Sidebar.astro";
 import Hero from "../components/Hero.astro";
 import Tabs from "../components/Tabs.astro";
-import ContactModal from "../components/ContactModal.astro";
+
+import "@fontsource/dm-sans/400.css";
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/700.css";
+import "bulma/css/bulma.min.css";
 
 interface Props {
   title: string;
@@ -12,190 +15,165 @@ interface Props {
 
 const { title } = Astro.props;
 const { pathname } = Astro.url;
-
-// Lógica de idioma mejorada
 const lang = pathname.startsWith("/en") ? "en" : "es";
 
-// Generar rutas dinámicas para los botones de idioma
-// Si estás en /es/skills, el botón EN te llevará a /en/skills
-const currentPathWithoutLang = pathname.replace(/^\/(es|en)/, "");
-const esPath = `/es${currentPathWithoutLang || "/"}`;
-const enPath = `/en${currentPathWithoutLang || "/"}`;
+const navItems = {
+  es: [
+    { label: "Inicio", path: `/${lang}/`, icon: "fas fa-home" },
+    {
+      label: "Servicios",
+      path: `/${lang}/services`,
+      icon: "fas fa-broadcast-tower",
+    },
+    {
+      label: "Proyectos",
+      path: `/${lang}/experience`,
+      icon: "fas fa-layer-group",
+    },
+    { label: "Competencias", path: `/${lang}/skills`, icon: "fas fa-terminal" },
+    { label: "Contacto", path: `/${lang}/contact`, icon: "fas fa-paper-plane" },
+  ],
+  en: [
+    { label: "Home", path: `/${lang}/`, icon: "fas fa-home" },
+    {
+      label: "Services",
+      path: `/${lang}/services`,
+      icon: "fas fa-broadcast-tower",
+    },
+    {
+      label: "Projects",
+      path: `/${lang}/experience`,
+      icon: "fas fa-layer-group",
+    },
+    { label: "Competencies", path: `/${lang}/skills`, icon: "fas fa-terminal" },
+    { label: "Contact", path: `/${lang}/contact`, icon: "fas fa-paper-plane" },
+  ],
+};
 
-const winIcons = {
-  close: "fa-solid fa-circle has-text-danger",
-  minimize: "fa-solid fa-circle has-text-warning",
-  maximize: "fa-solid fa-circle has-text-success",
-  options: "fas fa-angle-down",
+const nav = navItems[lang];
+const currentPath = pathname.replace(/\/$/, "") || `/${lang}`;
+const isActive = (path: string) => {
+  const target = path.replace(/\/$/, "") || `/${lang}`;
+  return currentPath === target;
 };
 ---
 
 <!doctype html>
-<html lang={lang} data-theme="light">
+<html lang={lang} data-theme="light" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/icons/font/css/all.css" />
-    <link rel="stylesheet" href="/css/debug.css" />
-    <link rel="stylesheet" href="/css/typography.css" />
+    <link rel="stylesheet" href="/css/tokens.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/hero.css" />
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/services.css" />
+    <link rel="stylesheet" href="/css/projects.css" />
+    <link rel="stylesheet" href="/css/skills.css" />
+    <link rel="stylesheet" href="/css/mobile.css" />
     <title>{title}</title>
     <ClientRouter />
+
     <script is:inline>
-      // Bloque 1: Tema del Documento (Evita el flash de fondo)
-      const getTheme = () => {
-        if (
-          typeof localStorage !== "undefined" &&
-          localStorage.getItem("theme")
-        ) {
-          return localStorage.getItem("theme");
-        }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
+      document.documentElement.classList.remove("no-js");
+      const t =
+        localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
-          : "light";
-      };
-
-      document.documentElement.setAttribute("data-theme", getTheme());
-
+          : "light");
+      document.documentElement.setAttribute("data-theme", t);
       document.addEventListener("astro:after-swap", () => {
-        document.documentElement.setAttribute("data-theme", getTheme());
-      });
-    </script>
-
-    <script is:inline>
-      // Bloque 2: Lógica del Botón e Iconos
-      const initTheme = () => {
-        const html = document.documentElement;
-        const themeBtn = document.getElementById("theme-toggle");
-        const themeIcon = document.querySelector("#theme-toggle i");
-
-        if (!themeBtn || !themeIcon) return;
-
-        const current = html.getAttribute("data-theme");
-        if (current === "dark") {
-          themeIcon.classList.replace("fa-moon", "fa-sun");
-        } else {
-          themeIcon.classList.replace("fa-sun", "fa-moon");
-        }
-
-        themeBtn.onclick = () => {
-          const isDark = html.getAttribute("data-theme") === "dark";
-          const nextTheme = isDark ? "light" : "dark";
-
-          html.setAttribute("data-theme", nextTheme);
-          localStorage.setItem("theme", nextTheme);
-
-          themeIcon.classList.toggle("fa-moon", nextTheme === "light");
-          themeIcon.classList.toggle("fa-sun", nextTheme === "dark");
-        };
-      };
-
-      document.addEventListener("DOMContentLoaded", initTheme);
-      document.addEventListener("astro:after-swap", initTheme);
-
-      // Bloque 3: Persistencia de Scroll
-      document.addEventListener("astro:before-preparation", () => {
-        window.savedScrollPosition = window.scrollY;
-      });
-
-      document.addEventListener("astro:after-swap", () => {
-        if (window.savedScrollPosition !== undefined) {
-          window.scrollTo(0, window.savedScrollPosition);
-        }
+        document.documentElement.classList.remove("no-js");
+        document.documentElement.setAttribute(
+          "data-theme",
+          localStorage.getItem("theme") || "light",
+        );
       });
     </script>
   </head>
+
   <body>
-    <main class="section is-small">
-      <div class="container is-fullhd">
+    <main class="section">
+      <div class="container is-widescreen" style="max-width: 1100px;">
         <div class="card">
+          <!-- Window chrome -->
           <header class="card-header">
             <div class="card-header-title">
-              <span class="icon is-small mx-1"
-                ><i class={winIcons.close}></i></span
-              >
-              <span class="icon is-small mx-1"
-                ><i class={winIcons.minimize}></i></span
-              >
-              <span class="icon is-small mx-1"
-                ><i class={winIcons.maximize}></i></span
-              >
-              <small class="ml-3">{title}.exe</small>
+              <span class="win-dot win-dot--close" aria-hidden="true"></span>
+              <span class="win-dot win-dot--minimize" aria-hidden="true"></span>
+              <span class="win-dot win-dot--maximize" aria-hidden="true"></span>
+              <small class="win-title">{title}.exe</small>
             </div>
-
-            <button
-              class="card-header-icon"
-              id="theme-toggle"
-              title="Cambiar Tema"
-            >
-              <span class="icon">
-                <i class="fas fa-moon"></i>
-              </span>
-            </button>
-
-            <div class="card-header-icon">
-              <div class="buttons has-addons">
-                <a
-                  href={enPath}
-                  class={`button is-small is-uppercase ${lang === "en" ? "is-link is-selected" : "is-light"}`}
-                >
-                  EN
-                </a>
-                <a
-                  href={esPath}
-                  class={`button is-small is-uppercase ${lang === "es" ? "is-link is-selected" : "is-light"}`}
-                >
-                  ES
-                </a>
-              </div>
+            <div class="header-controls">
+              <button
+                id="lang-toggle"
+                class="ctrl-btn"
+                aria-label="Toggle language">ES</button
+              >
+              <button
+                id="theme-toggle"
+                class="ctrl-btn"
+                aria-label="Toggle theme"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-sun" id="theme-icon"></i>
+                </span>
+              </button>
             </div>
-
-            <button class="card-header-icon">
-              <span class="icon">
-                <i class={winIcons.options}></i>
-              </span>
-            </button>
           </header>
 
-          <div class="card-content">
-            <div class="columns is-gapless">
-              <aside class="column is-one-quarter sidebar-wrapper">
+          <!-- Content -->
+          <div class="card-content p-0">
+            <div class="app-columns">
+              <!-- Sidebar — desktop only -->
+              <aside
+                class="sidebar-wrapper"
+                id="sidebar"
+                aria-label="Navigation"
+              >
                 <Sidebar />
               </aside>
-              <div class="column content-column">
-                <header class="hero is-small">
+
+              <!-- Main -->
+              <div class="content-column">
+                <!-- Hero -->
+                <div class="hero is-small">
                   <div class="hero-body">
                     <Hero />
                   </div>
-                  <div class="hero-foot">
-                    <Tabs />
-                  </div>
-                </header>
+                </div>
 
-                <div class="section">
+                <!-- Tabs — tablet + mobile -->
+                <div class="hero-tab">
+                  <Tabs />
+                </div>
+
+                <!-- Desktop divider — only when tabs hidden -->
+                <div class="desktop-divider"></div>
+
+                <!-- Content -->
+                <div class="content-scroll">
                   <slot />
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Footer -->
           <footer class="card-footer">
             <div class="card-footer-item">
-              <span class="is-size-7">
-                Status: <strong class="">Online</strong>
-              </span>
+              <span class="is-size-7">Status: <strong>Online</strong></span>
             </div>
             <div class="card-footer-item">
-              <a href="#" class="">
-                <span class="icon"><i class="fab fa-github"></i></span>
-                Source Code
-              </a>
+              <span class="is-size-7"> Leon · <strong>España</strong></span>
             </div>
           </footer>
         </div>
       </div>
     </main>
-    <ContactModal />
+
+    <script src="/js/theme.js" is:inline></script>
+    <script src="/js/lang.js" is:inline></script>
   </body>
 </html>

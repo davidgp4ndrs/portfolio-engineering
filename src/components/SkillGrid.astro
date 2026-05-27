@@ -1,53 +1,36 @@
 ---
-const { data, config } = Astro.props;
+// src/components/SkillGrid.astro
+import { skillsData } from "../data/skillsData";
+
+const { pathname } = Astro.url;
+const lang = pathname.startsWith("/en") ? "en" : "es";
+const data = skillsData[lang];
 ---
 
-<div class="container mb-5">
-  <div class="is-flex is-align-items-center">
-    <span class="icon mr-2">
-      <i class={config.headerIcon}></i>
-    </span>
-    <h2 class="title">{data.header}</h2>
-  </div>
-</div>
+<div class="sk-grid">
+  {data.groups.map((group: any) => (
+    <div class="sk-card">
 
-<div class="container">
-  <div class="columns is-multiline">
-    {
-      data.groups.map((group) => (
-    <div class="column is-12-mobile is-6-tablet is-6-desktop">
-          <div class="box">
-            <div class="level is-mobile mb-3">
-              <div class="level-left">
-                <div class="level-item">
-                  <span class="icon is-small mr-2">
-                    <i class={config.categoryIcon} />
-                  </span>
-                  <p class="heading mb-0">{group.category}</p>
-                </div>
-              </div>
-              <div class="level-right">
-                <div class="level-item">
-                  <span class="tag ">{group.status}</span>
-                </div>
-              </div>
-            </div>
+      <!-- Category title -->
+      <p class="sk-category">{group.category}</p>
 
-            <div class="tags">
-              {group.skills.map((skill) => (
-                <span class="tag">{skill}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      ))
-    }
-  </div>
+      <!-- Two columns: detail + list -->
+      <div class="sk-body">
 
-  <div class="container mt-4">
-    <p class="">
-      {data.footerText}
-      <strong>{data.footerValue}</strong>
-    </p>
-  </div>
+        <!-- Left: detail -->
+        <p class="sk-detail">{group.detail}</p>
+
+        <!-- Right: skills list (Limitada a un máximo de 7 elementos) -->
+        <ul class="sk-list">
+          {group.skills.slice(0, 7).map((skill: string) => (
+            <li class="sk-item">
+              <span class="sk-dot" aria-hidden="true">·</span>
+              {skill}
+            </li>
+          ))}
+        </ul>
+
+      </div>
+    </div>
+  ))}
 </div>

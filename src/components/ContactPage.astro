@@ -1,0 +1,460 @@
+---
+// src/components/ContactPage.astro
+import {
+  contactData,
+  availabilityColors,
+  type Lang,
+} from "../data/contactData";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = contactData[lang];
+const tf = t.form;
+const av = availabilityColors[t.availabilityStatus];
+
+const FORM_ACTION = "https://formspree.io/f/mqejgvnn";
+
+const whatsapp = t.infoItems.find((item) => item.icon === "fab fa-whatsapp");
+---
+
+<div class="cp-page" data-lang={lang}>
+  <div class="cp-content-wrapper">
+    
+    <header class="cp-header">
+      <div class="cp-status-box">
+        <span class={`cp-status-tag tag ${av.tag}`}>
+          <span class="cp-status-dot" style={`background:${av.dot}`}></span>
+          {t.availabilityValue}
+        </span>
+      </div>
+      
+      {
+        whatsapp && (
+          <div class="cp-whatsapp-box">
+            <a
+              href={whatsapp.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cp-whatsapp"
+              aria-label="WhatsApp"
+              title={whatsapp.value}
+            >
+              <span class="icon is-small">
+                <i class="fab fa-whatsapp" />
+              </span>
+              <span>{whatsapp.value}</span>
+            </a>
+          </div>
+        )
+      }
+    </header>
+
+    <section aria-label={t.a11y.formRegion}>
+      <div
+        id="contact-status"
+        role="status"
+        aria-live="polite"
+        class="cp-status-region"
+      >
+      </div>
+
+      <form
+        id="contact-form"
+        action={FORM_ACTION}
+        method="POST"
+        class="cp-form"
+        novalidate
+        data-success-heading={tf.successHeading}
+        data-success-body={tf.successBody}
+        data-error-heading={tf.errorHeading}
+        data-error-body={tf.errorBody}
+        data-sending-label={tf.sendingBtn}
+        data-send-label={tf.sendBtn}
+      >
+        <div class="field">
+          <label class="label cp-label" for="contact-subject">
+            {tf.subjectLabel}<span class="cp-required">*</span>
+          </label>
+          <div class="control has-icons-left">
+            <input
+              id="contact-subject"
+              class="input cp-input"
+              type="text"
+              name="subject"
+              placeholder={tf.subjectPlaceholder}
+              required
+              aria-required="true"
+              autocomplete="off"
+            />
+            <span class="icon is-left is-small" aria-hidden="true">
+              <i class="fas fa-tag"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="cp-two-col">
+          <div class="field">
+            <label class="label cp-label" for="contact-name">
+              {tf.nameLabel}<span class="cp-required">*</span>
+            </label>
+            <div class="control has-icons-left">
+              <input
+                id="contact-name"
+                class="input cp-input"
+                type="text"
+                name="name"
+                placeholder={tf.namePlaceholder}
+                required
+                aria-required="true"
+                autocomplete="name"
+              />
+              <span class="icon is-left is-small" aria-hidden="true">
+                <i class="fas fa-user"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label cp-label" for="contact-email">
+              {tf.emailLabel}<span class="cp-required">*</span>
+            </label>
+            <div class="control has-icons-left">
+              <input
+                id="contact-email"
+                class="input cp-input"
+                type="email"
+                name="email"
+                placeholder={tf.emailPlaceholder}
+                required
+                aria-required="true"
+                autocomplete="email"
+              />
+              <span class="icon is-left is-small" aria-hidden="true">
+                <i class="fas fa-at"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label cp-label" for="contact-message">
+            {tf.messageLabel}<span class="cp-required">*</span>
+          </label>
+          <div class="control">
+            <textarea
+              id="contact-message"
+              class="textarea cp-input cp-textarea"
+              name="message"
+              rows="5"
+              placeholder={tf.messagePlaceholder}
+              required
+              aria-required="true"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <button id="contact-submit" type="submit" class="button cp-submit">
+              <span class="icon is-small" aria-hidden="true">
+                <i class="fas fa-paper-plane" id="submit-icon"></i>
+              </span>
+              <span id="submit-label">{tf.sendBtn}</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+<style>
+  .cp-page {
+    width: 100%;
+  }
+
+  /* 👈 NUEVO: Envoltura de control de lectura centrado para evitar desparrame de inputs */
+  .cp-content-wrapper {
+    max-width: 580px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* ── Header Ajustado ── */
+  .cp-header {
+    display: flex;
+    justify-content: space-between; /* Alinea disponibilidad a la izq y WhatsApp a la der */
+    align-items: center;
+    padding-bottom: 0.25rem;
+    border-bottom: none; /* 👈 REPARADO: Se eliminó la línea divisora anterior */
+  }
+
+  .cp-status-box,
+  .cp-whatsapp-box {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .cp-status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .cp-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── WhatsApp ── */
+  .cp-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: #22c55e;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.15s ease;
+  }
+
+  .cp-whatsapp:hover {
+    opacity: 0.8;
+  }
+
+  /* ── Form ── */
+  .cp-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 600px) {
+    .cp-two-col {
+      grid-template-columns: 1fr;
+    }
+    .cp-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  .cp-label {
+    font-size: 0.68rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--cv-text-muted) !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .cp-required {
+    color: var(--cv-accent);
+    margin-left: 2px;
+  }
+
+  .cp-input {
+    background: var(--cv-card-bg) !important;
+    border-color: var(--cv-border) !important;
+    color: var(--cv-text) !important;
+    font-size: 0.83rem !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .cp-input:focus {
+    border-color: var(--cv-accent) !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15) !important;
+    outline: none;
+  }
+
+  .cp-input::placeholder {
+    color: var(--cv-text-muted);
+    opacity: 0.6;
+  }
+
+  .cp-textarea {
+    resize: none;
+    min-height: 120px;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  .cp-submit {
+    background: var(--cv-accent) !important;
+    border-color: var(--cv-accent) !important;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 0.83rem !important;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    width: 100%;
+  }
+
+  .cp-submit:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+
+  .cp-submit:active {
+    transform: translateY(0);
+  }
+
+  .cp-submit.is-loading-custom {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* ── Status region ── */
+  .cp-status-region {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.25s ease, opacity 0.25s ease;
+  }
+
+  .cp-status-region.is-visible {
+    max-height: 80px;
+    opacity: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Validation ── */
+  .cp-input.is-invalid {
+    border-color: #ef4444 !important;
+  }
+
+  .cp-field-error {
+    font-size: 0.68rem;
+    color: #ef4444;
+    margin-top: 0.2rem;
+  }
+</style>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const btn = document.getElementById("contact-submit") as HTMLButtonElement | null;
+    const icon = document.getElementById("submit-icon") as HTMLElement | null;
+    const label = document.getElementById("submit-label") as HTMLElement | null;
+    const status = document.getElementById("contact-status") as HTMLElement | null;
+
+    if (!form || !btn) return;
+
+    const labels = {
+      sending: form.dataset.sendingLabel || "Sending…",
+      send: form.dataset.sendLabel || "Send",
+      successHeading: form.dataset.successHeading || "Sent",
+      successBody: form.dataset.successBody || "",
+      errorHeading: form.dataset.errorHeading || "Error",
+      errorBody: form.dataset.errorBody || "",
+    };
+
+    function markInvalid(input: HTMLInputElement | HTMLTextAreaElement, msg: string) {
+      input.classList.add("is-invalid");
+      if (!input.parentElement?.querySelector(".cp-field-error")) {
+        const err = document.createElement("p");
+        err.className = "cp-field-error";
+        err.textContent = msg;
+        input.parentElement?.appendChild(err);
+      }
+    }
+
+    function clearInvalid(input: HTMLInputElement | HTMLTextAreaElement) {
+      input.classList.remove("is-invalid");
+      input.parentElement?.querySelector(".cp-field-error")?.remove();
+    }
+
+    form
+      .querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input, textarea")
+      .forEach((el) => el.addEventListener("input", () => clearInvalid(el)));
+
+    function showStatus(type: "success" | "error", heading: string, body: string) {
+      if (!status) return;
+      const colorClass = type === "success" ? "is-success" : "is-danger";
+      const iconClass = type === "success" ? "fas fa-circle-check" : "fas fa-circle-exclamation";
+      status.innerHTML = `
+        <article class="message ${colorClass} is-small" style="margin:0;">
+          <div class="message-body" style="padding:0.5rem 0.75rem;">
+            <div class="is-flex is-align-items-center" style="gap:0.5rem;">
+              <span class="icon is-small"><i class="${iconClass}"></i></span>
+              <strong>${heading}</strong>
+            </div>
+            ${body ? `<p style="margin:0.2rem 0 0;font-size:0.7rem;">${body}</p>` : ""}
+          </div>
+        </article>`;
+      status.classList.add("is-visible");
+    }
+
+    function hideStatus() {
+      if (!status) return;
+      status.classList.remove("is-visible");
+      setTimeout(() => { status.innerHTML = ""; }, 300);
+    }
+
+    function setLoading(loading: boolean) {
+      if (!btn || !icon || !label) return;
+      if (loading) {
+        btn.classList.add("is-loading-custom");
+        btn.setAttribute("aria-busy", "true");
+        icon.className = "fas fa-circle-notch fa-spin";
+        label.textContent = labels.sending;
+      } else {
+        btn.classList.remove("is-loading-custom");
+        btn.removeAttribute("aria-busy");
+        icon.className = "fas fa-paper-plane";
+        label.textContent = labels.send;
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideStatus();
+
+      let valid = true;
+      form
+        .querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]")
+        .forEach((el) => {
+          if (!el.value.trim()) {
+            markInvalid(el, el.validationMessage || "Required");
+            valid = false;
+          }
+        });
+      if (!valid) return;
+
+      setLoading(true);
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (res.ok) {
+          showStatus("success", labels.successHeading, labels.successBody);
+          form.reset();
+        } else {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch {
+        showStatus("error", labels.errorHeading, labels.errorBody);
+      } finally {
+        setLoading(false);
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupContactForm);
+</script>
