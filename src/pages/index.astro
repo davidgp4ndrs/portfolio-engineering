@@ -1,0 +1,24 @@
+---
+// src/pages/index.astro
+// Redirección dinámica basada en el idioma del navegador del usuario
+---
+<script>
+  const userLang = navigator.language || 'en';
+  if (userLang.startsWith('es')) {
+    window.location.pathname = '/es/';
+  } else {
+    window.location.pathname = '/en/';
+  }
+</script>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <!-- Redirección de respaldo por si el JavaScript está desactivado -->
+    <meta http-equiv="refresh" content="0;url=/en/" />
+  </head>
+  <body>
+    <p>Redirecting to portfolio...</p>
+  </body>
+</html>
